@@ -1,16 +1,27 @@
-# Vinay Paspula
-# This is to practice the use of the map function
+s = open("r2.txt","r")
+r = open("r3.txt", "w")
 
+thisKey = ""
+thisValue = 0.0
 
-f = open("purchases.txt","r")  # open file, read-only
-o = open("result01.txt", "w") # open file, write
-for line in f:  
-    rowList = line.strip().split("    ") 
-    print (rowList )
-    print (len(rowList ))
-    if len(rowList) == 6:
-        date, time, location, dept, amount, payType = rowList  #assign names
-        print ("{0}\t{1}".format(location, amount))
-        o.write("{0}\t{1}\n".format(location, amount))
-f.close()
-o.close()
+for line in s:
+  data = line.strip().split('\t')
+  store, amount = data
+  if store != thisKey:
+    if thisKey:
+
+      # output the last key value pair result
+      r.write(thisKey + '\t' + str(thisValue)+'\n')
+
+    # start over when changing keys
+    thisKey = store
+    thisValue = 0.0
+
+  # apply the aggregation function
+  thisValue += float(amount)
+
+# output the final entry when done
+r.write(thisKey + '\t' + str(thisValue)+'\n')
+
+s.close()
+r.close()
